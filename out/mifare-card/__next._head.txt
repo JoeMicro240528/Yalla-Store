@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[78309,["/_next/static/chunks/0s91na2u3~qyl.js","/_next/static/chunks/0ss-o16vvtkpg.js"],"ViewportBoundary"]
+3:I[78309,["/_next/static/chunks/0s91na2u3~qyl.js","/_next/static/chunks/0ss-o16vvtkpg.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"كروت ماي فير | Mifare Card | Yalla Store"}],["$","meta","1",{"name":"description","content":"كروت ماي فير الذكية عالية الأمان للتطبيقات المتعددة - أنظمة الدفع والتحكم في الوصول والعضويات"}],["$","meta","2",{"name":"keywords","content":"كروت ماي فير, Mifare Card, كروت ذكية, Smart Card, كروت الدفع الإلكتروني"}],["$","link","3",{"rel":"canonical","href":"https://yalla-store.com/mifare-card"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"Ef7zl_m3z3SEpz-BrcmaE"}

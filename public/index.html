@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-scroll-behavior="smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yalla Store | نظام انتظار العملاء في مصر | Queue Management System</title>
+  <meta name="description" content="Yalla Store - الموزع المعتمد لأنظمة انتظار العملاء QSERVE في مصر. نقدم حلول متكاملة لإدارة الطوابير، أنظمة استدعاء الممرضات، كروت الدخول، وأجهزة الخدمات الذاتية.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            primary: '#0066cc',
+            'primary-dark': '#004d99',
+            secondary: '#00a8e8',
+            accent: '#ff6b35',
+            background: '#ffffff',
+            foreground: '#1a1a2e',
+            muted: '#6b7280',
+            border: '#e5e7eb',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; }
+    .gradient-primary { background: linear-gradient(135deg, #0066cc 0%, #00a8e8 100%); }
+    .gradient-dark { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,102,204,0.15); }
+    .nav-link { transition: color 0.2s ease; }
+    .nav-link:hover { color: #0066cc; }
+    .btn-primary { 
+      background: linear-gradient(135deg, #0066cc 0%, #00a8e8 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,102,204,0.3);
+    }
+    .hero-pattern {
+      background-image: radial-gradient(circle at 20% 50%, rgba(0,102,204,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(0,168,232,0.1) 0%, transparent 50%);
+    }
+  </style>
+</head>
+<body class="bg-white text-foreground">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+            <span class="text-white font-bold text-lg">Q</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-lg text-primary leading-tight">QSERVE</span>
+            <span class="text-xs text-muted">Yalla Store</span>
+          </div>
+        </a>
+        
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-1">
+          <a href="#home" class="nav-link px-4 py-2 text-sm font-medium text-foreground hover:text-primary rounded-md">الرئيسية</a>
+          <div class="relative group">
+            <button class="nav-link px-4 py-2 text-sm font-medium text-foreground hover:text-primary rounded-md flex items-center gap-1">
+              منتجاتنا
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="p-2">
+                <a href="#nurses-call" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">نظام استدعاء الممرضات</a>
+                <a href="#queuing" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">نظام انتظار العملاء QSERVE</a>
+                <a href="#proximity" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">كروت بروكسيمتي</a>
+                <a href="#mifare" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">كروت ماي فير</a>
+                <a href="#id-printing" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">طباعة كروت بلاستيك ID</a>
+                <a href="#id-printers" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">طابعات الكروت</a>
+                <a href="#kiosks" class="block px-4 py-3 text-sm text-foreground hover:bg-gray-50 rounded-lg">أجهزة الخدمات الذاتية</a>
+              </div>
+            </div>
+          </div>
+          <a href="#about" class="nav-link px-4 py-2 text-sm font-medium text-foreground hover:text-primary rounded-md">من نحن</a>
+          <a href="#contact" class="nav-link px-4 py-2 text-sm font-medium text-foreground hover:text-primary rounded-md">تواصل معنا</a>
+        </nav>
+
+        <!-- CTA Button -->
+        <a href="#contact" class="hidden md:flex btn-primary text-white px-6 py-2.5 rounded-full text-sm font-semibold items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          اتصل بنا
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-border bg-white">
+      <div class="px-4 py-4 space-y-2">
+        <a href="#home" class="block px-4 py-3 text-sm font-medium text-foreground hover:bg-gray-50 rounded-lg">الرئيسية</a>
+        <a href="#services" class="block px-4 py-3 text-sm font-medium text-foreground hover:bg-gray-50 rounded-lg">منتجاتنا</a>
+        <a href="#about" class="block px-4 py-3 text-sm font-medium text-foreground hover:bg-gray-50 rounded-lg">من نحن</a>
+        <a href="#contact" class="block px-4 py-3 text-sm font-medium text-foreground hover:bg-gray-50 rounded-lg">تواصل معنا</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative min-h-[90vh] flex items-center hero-pattern overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="text-center lg:text-right">
+          <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+            الموزع المعتمد في مصر
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
+            حلول متكاملة لإدارة
+            <span class="text-transparent bg-clip-text gradient-primary bg-gradient-to-l from-primary to-secondary"> الطوابير والخدمات</span>
+          </h1>
+          <p class="text-lg md:text-xl text-muted mb-8 max-w-2xl mx-auto lg:mx-0">
+            نقدم أحدث أنظمة انتظار العملاء QSERVE وأنظمة استدعاء الممرضات وحلول الكروت الذكية وأجهزة الخدمات الذاتية للبنوك والمستشفيات والشركات في مصر
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a href="#services" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold inline-flex items-center justify-center gap-2">
+              استكشف منتجاتنا
+              <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+            <a href="#contact" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-full text-lg font-semibold inline-flex items-center justify-center gap-2 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              تواصل معنا
+            </a>
+          </div>
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border/50">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">+500</div>
+              <div class="text-sm text-muted">عميل راضٍ</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">+15</div>
+              <div class="text-sm text-muted">سنة خبرة</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">24/7</div>
+              <div class="text-sm text-muted">دعم فني</div>
+            </div>
+          </div>
+        </div>
+        <!-- Hero Visual -->
+        <div class="hidden lg:flex items-center justify-center">
+          <div class="relative w-80 h-80">
+            <div class="absolute inset-0 rounded-full border-2 border-primary/20 animate-pulse"></div>
+            <div class="absolute inset-4 rounded-full border border-primary/10"></div>
+            <div class="absolute inset-8 rounded-full bg-primary/5 flex items-center justify-center">
+              <div class="w-40 h-40 rounded-2xl gradient-primary shadow-2xl flex items-center justify-center animate-float">
+                <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">منتجاتنا</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">حلول متكاملة لجميع احتياجاتك</h2>
+        <p class="text-lg text-muted max-w-2xl mx-auto">نقدم مجموعة شاملة من المنتجات والخدمات لتحسين تجربة العملاء وإدارة الطوابير</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Service Card 1 -->
+        <div id="nurses-call" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">نظام استدعاء الممرضات</h3>
+            <p class="text-sm text-primary font-medium mb-3">Nurses Call System</p>
+            <p class="text-muted text-sm mb-4">نظام متكامل للمستشفيات والعيادات يوفر اتصالاً فورياً بين المرضى والطاقم الطبي مع تصنيف ذكي للأولويات</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div id="queuing" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">نظام انتظار العملاء QSERVE</h3>
+            <p class="text-sm text-primary font-medium mb-3">Queuing System QSERVE</p>
+            <p class="text-muted text-sm mb-4">نظام إدارة الطوابير الذكي للبنوك والمؤسسات الحكومية مع شاشات عرض رقمية وتقارير تحليلية</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div id="proximity" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">كروت بروكسيمتي</h3>
+            <p class="text-sm text-primary font-medium mb-3">Proximity Card</p>
+            <p class="text-muted text-sm mb-4">كروت RFID للتحكم في الدخول وتسجيل الحضور والانصراف بتقنية متطورة وأمان عالي</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 4 -->
+        <div id="mifare" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">كروت ماي فير</h3>
+            <p class="text-sm text-primary font-medium mb-3">Mifare Card</p>
+            <p class="text-muted text-sm mb-4">كروت ذكية متعددة الاستخدامات للدفع الإلكتروني والتحكم في الوصول مع تشفير متقدم</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 5 -->
+        <div id="id-printing" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">طباعة كروت بلاستيك ID</h3>
+            <p class="text-sm text-primary font-medium mb-3">ID Card Printing</p>
+            <p class="text-muted text-sm mb-4">خدمات طباعة كروت الهوية والعضوية بجودة عالية وألوان زاهية مع تصميمات احترافية</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 6 -->
+        <div id="id-printers" class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="aspect-video bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-foreground mb-2">طابعات الكروت</h3>
+            <p class="text-sm text-primary font-medium mb-3">ID Card Printers</p>
+            <p class="text-muted text-sm mb-4">أحدث طابعات الكروت من أفضل العلامات التجارية العالمية مع ضمان ودعم فني</p>
+            <a href="#contact" class="text-primary font-semibold text-sm hover:underline inline-flex items-center gap-1">
+              اطلب الآن
+              <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 7 - Full Width -->
+        <div id="kiosks" class="md:col-span-2 lg:col-span-3 bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="grid md:grid-cols-2 gap-0">
+            <div class="aspect-video md:aspect-auto bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center p-12">
+              <svg class="w-32 h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            </div>
+            <div class="p-8 flex flex-col justify-center">
+              <h3 class="text-2xl font-bold text-foreground mb-2">أجهزة الخدمات الذاتية</h3>
+              <p class="text-sm text-primary font-medium mb-4">Self Service Kiosks</p>
+              <p class="text-muted mb-6">أجهزة الخدمة الذاتية التفاعلية للبنوك والمطاعم ومراكز التسوق مع شاشات لمس متطورة وتكامل مع أنظمة الدفع الإلكتروني</p>
+              <ul class="space-y-2 mb-6">
+                <li class="flex items-center gap-2 text-sm text-muted">
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  شاشات لمس عالية الدقة
+                </li>
+                <li class="flex items-center gap-2 text-sm text-muted">
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  تكامل مع أنظمة الدفع
+                </li>
+                <li class="flex items-center gap-2 text-sm text-muted">
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  تصميم مخصص حسب الطلب
+                </li>
+              </ul>
+              <a href="#contact" class="btn-primary text-white px-6 py-3 rounded-full text-sm font-semibold inline-flex items-center gap-2 w-fit">
+                اطلب الآن
+                <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">من نحن</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-6">خبرة تمتد لأكثر من 15 عاماً في السوق المصري</h2>
+          <p class="text-lg text-muted mb-6">
+            Yalla Store هي الموزع المعتمد لأنظمة QSERVE في مصر. نحن نقدم حلولاً متكاملة لإدارة الطوابير وأنظمة استدعاء الممرضات وحلول الكروت الذكية لمختلف القطاعات.
+          </p>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-bold text-foreground mb-1">جودة عالمية</h3>
+                <p class="text-muted text-sm">منتجات معتمدة دولياً بأعلى معايير الجودة</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-bold text-foreground mb-1">دعم فني متواصل</h3>
+                <p class="text-muted text-sm">فريق دعم فني متخصص متاح على مدار الساعة</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-bold text-foreground mb-1">تركيب سريع</h3>
+                <p class="text-muted text-sm">فريق تركيب محترف مع ضمان شامل</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-4">
+              <div class="bg-gray-100 rounded-2xl p-8 text-center">
+                <div class="text-4xl font-bold text-primary mb-2">+500</div>
+                <div class="text-sm text-muted">عميل</div>
+              </div>
+              <div class="bg-primary rounded-2xl p-8 text-center">
+                <div class="text-4xl font-bold text-white mb-2">+1000</div>
+                <div class="text-sm text-white/80">مشروع</div>
+              </div>
+            </div>
+            <div class="space-y-4 mt-8">
+              <div class="bg-secondary rounded-2xl p-8 text-center">
+                <div class="text-4xl font-bold text-white mb-2">+15</div>
+                <div class="text-sm text-white/80">سنة خبرة</div>
+              </div>
+              <div class="bg-gray-100 rounded-2xl p-8 text-center">
+                <div class="text-4xl font-bold text-primary mb-2">24/7</div>
+                <div class="text-sm text-muted">دعم فني</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl font-bold text-foreground mb-4">عملاؤنا يثقون بنا</h2>
+        <p class="text-muted">نفخر بخدمة أكبر المؤسسات في مصر</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
+        <div class="text-center font-bold text-xl text-gray-400">البنك الأهلي</div>
+        <div class="text-center font-bold text-xl text-gray-400">بنك مصر</div>
+        <div class="text-center font-bold text-xl text-gray-400">CIB</div>
+        <div class="text-center font-bold text-xl text-gray-400">وزارة الداخلية</div>
+        <div class="text-center font-bold text-xl text-gray-400">مستشفى 57357</div>
+        <div class="text-center font-bold text-xl text-gray-400">المستشفى السعودي</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">تواصل معنا</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">نحن هنا لمساعدتك</h2>
+        <p class="text-lg text-muted max-w-2xl mx-auto">تواصل معنا للحصول على استشارة مجانية وعرض أسعار مخصص لاحتياجاتك</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-border">
+          <h3 class="text-xl font-bold text-foreground mb-6">أرسل لنا رسالة</h3>
+          <form class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-foreground mb-2">الاسم الكامل</label>
+                <input type="text" class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="أدخل اسمك">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-foreground mb-2">رقم الهاتف</label>
+                <input type="tel" class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="01xxxxxxxxx">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">البريد الإلكتروني</label>
+              <input type="email" class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="example@email.com">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">المنتج المطلوب</label>
+              <select class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white">
+                <option value="">اختر المنتج</option>
+                <option value="nurses-call">نظام استدعاء الممرضات</option>
+                <option value="queuing">نظام انتظار العملاء QSERVE</option>
+                <option value="proximity">كروت بروكسيمتي</option>
+                <option value="mifare">كروت ماي فير</option>
+                <option value="id-printing">طباعة كروت بلاستيك ID</option>
+                <option value="id-printers">طابعات الكروت</option>
+                <option value="kiosks">أجهزة الخدمات الذاتية</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">الرسالة</label>
+              <textarea rows="4" class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" placeholder="اكتب رسالتك هنا..."></textarea>
+            </div>
+            <button type="submit" class="w-full btn-primary text-white py-4 rounded-xl font-semibold text-lg">
+              إرسال الرسالة
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="space-y-8">
+          <div class="bg-gray-50 rounded-2xl p-8">
+            <h3 class="text-xl font-bold text-foreground mb-6">معلومات التواصل</h3>
+            <div class="space-y-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-foreground mb-1">العنوان</h4>
+                  <p class="text-muted text-sm">القاهرة، مصر</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-foreground mb-1">الهاتف</h4>
+                  <p class="text-muted text-sm" dir="ltr">+20 123 456 7890</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-foreground mb-1">البريد الإلكتروني</h4>
+                  <p class="text-muted text-sm">info@yallastore.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WhatsApp CTA -->
+          <a href="https://wa.me/201234567890" target="_blank" class="block bg-green-500 hover:bg-green-600 rounded-2xl p-6 transition-all">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-lg">تواصل معنا عبر واتساب</h4>
+                <p class="text-white/80 text-sm">رد فوري على استفساراتك</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Map -->
+          <div class="rounded-2xl overflow-hidden h-64">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.123456789!2d31.235712!3d30.044420!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDAyJzM5LjkiTiAzMcKwMTQnMDguNiJF!5e0!3m2!1sen!2seg!4v1234567890"
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy"
+              title="Yalla Store Location"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="gradient-dark text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+              <span class="text-white font-bold text-xl">Q</span>
+            </div>
+            <div>
+              <span class="font-bold text-xl text-white">QSERVE</span>
+              <span class="block text-xs text-gray-400">Yalla Store</span>
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm mb-6">الموزع المعتمد لأنظمة انتظار العملاء QSERVE في مصر. نقدم حلولاً متكاملة للبنوك والمستشفيات والشركات.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h3 class="font-bold text-lg mb-6">روابط سريعة</h3>
+          <ul class="space-y-3">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors text-sm">الرئيسية</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white transition-colors text-sm">منتجاتنا</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-white transition-colors text-sm">من نحن</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors text-sm">تواصل معنا</a></li>
+          </ul>
+        </div>
+
+        <!-- Products -->
+        <div>
+          <h3 class="font-bold text-lg mb-6">منتجاتنا</h3>
+          <ul class="space-y-3">
+            <li><a href="#nurses-call" class="text-gray-400 hover:text-white transition-colors text-sm">نظام استدعاء الممرضات</a></li>
+            <li><a href="#queuing" class="text-gray-400 hover:text-white transition-colors text-sm">نظام انتظار العملاء</a></li>
+            <li><a href="#proximity" class="text-gray-400 hover:text-white transition-colors text-sm">كروت بروكسيمتي</a></li>
+            <li><a href="#kiosks" class="text-gray-400 hover:text-white transition-colors text-sm">أجهزة الخدمات الذاتية</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h3 class="font-bold text-lg mb-6">تواصل معنا</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-gray-400 text-sm">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              القاهرة، مصر
+            </li>
+            <li class="flex items-center gap-3 text-gray-400 text-sm">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              <span dir="ltr">+20 123 456 7890</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-400 text-sm">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              info@yallastore.com
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-gray-400 text-sm">© 2024 Yalla Store - QSERVE. جميع الحقوق محفوظة.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.757-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+          </a>
+          <a href="https://wa.me/201234567890" target="_blank" class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center hover:bg-green-600 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Menu Script -->
+  <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
