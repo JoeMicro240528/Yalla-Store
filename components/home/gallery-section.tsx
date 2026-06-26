@@ -226,7 +226,7 @@ const sectors = [
   },
   {
     id: "aviation",
-    label: "شركات الطيران",
+    label: "شرك��ت الطيران",
     icon: Plane,
     projects: 10,
     windows: 65,
@@ -334,21 +334,18 @@ const delightedCustomers = [
 // ─── Logo card ────────────────────────────────────────────────────────────────
 
 function LogoCard({ customer }: { customer: typeof delightedCustomers[0] }) {
-  const initials = customer.name
-    .replace(/[\u0600-\u06FF\s]+/g, (m) => m.trim().charAt(0))
-    .substring(0, 2)
-    .toUpperCase() || customer.name.substring(0, 2).toUpperCase()
-
   return (
-    <div className="flex-shrink-0 w-44 h-24 rounded-xl border border-border bg-card flex flex-col items-center justify-center gap-1.5 px-3 mx-2 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200">
-      {/* Colored initial badge */}
+    <div
+      className="inline-flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card shadow-sm px-4 mx-3"
+      style={{ minWidth: "160px", height: "96px" }}
+    >
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
+        className="w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold"
         style={{ backgroundColor: customer.bg, color: customer.color }}
       >
         {customer.name.charAt(0)}
       </div>
-      <p className="text-xs font-medium text-foreground text-center leading-tight line-clamp-2">
+      <p className="text-xs font-medium text-foreground text-center leading-tight max-w-[140px] line-clamp-2">
         {customer.name}
       </p>
     </div>
@@ -359,24 +356,36 @@ function LogoCard({ customer }: { customer: typeof delightedCustomers[0] }) {
 
 function MarqueeRow({
   customers,
-  reverse = false,
-  speed = 30,
+  direction = "left",
+  duration = "35s",
 }: {
   customers: typeof delightedCustomers
-  reverse?: boolean
-  speed?: number
+  direction?: "left" | "right"
+  duration?: string
 }) {
-  const doubled = [...customers, ...customers]
+  // Duplicate for seamless loop
+  const items = [...customers, ...customers]
   return (
-    <div className="overflow-hidden">
+    <div
+      dir="ltr"
+      style={{
+        overflow: "hidden",
+        position: "relative",
+        width: "100%",
+      }}
+    >
       <div
-        className="flex"
         style={{
-          animation: `marquee ${speed}s linear infinite ${reverse ? "reverse" : "normal"}`,
+          display: "flex",
           width: "max-content",
+          animationName: direction === "left" ? "scroll-left" : "scroll-right",
+          animationDuration: duration,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          willChange: "transform",
         }}
       >
-        {doubled.map((c, i) => (
+        {items.map((c, i) => (
           <LogoCard key={i} customer={c} />
         ))}
       </div>
@@ -408,7 +417,7 @@ function ClientTicker({ clients }: { clients: string[] }) {
   )
 }
 
-// ─── Main section ─────────────────────────────────────────────────────────────
+// ─── Main section ──��──────────────────────────────────────────────────────────
 
 export function GallerySection() {
   const [activeSector, setActiveSector] = useState("all")
@@ -567,7 +576,7 @@ export function GallerySection() {
         )}
       </div>
 
-      {/* ── Logo Wall ──────────────────────────────────────────────────── */}
+      {/* ── Logo Wall ────────────────────────────────────────────────��─── */}
       <div className="mt-20 border-t border-border pt-16">
         <div className="container mx-auto px-4 mb-10 text-center">
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
@@ -581,17 +590,10 @@ export function GallerySection() {
           </p>
         </div>
 
-        {/* Marquee rows with edge fades */}
-        <div className="relative">
-          {/* Left fade */}
-          <div className="absolute inset-y-0 start-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
-          {/* Right fade */}
-          <div className="absolute inset-y-0 end-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
-
-          <div className="flex flex-col gap-4 py-2">
-            <MarqueeRow customers={delightedCustomers.slice(0, 19)} speed={35} />
-            <MarqueeRow customers={delightedCustomers.slice(19)} reverse speed={28} />
-          </div>
+        {/* Marquee rows */}
+        <div className="flex flex-col gap-4 py-2">
+          <MarqueeRow customers={delightedCustomers.slice(0, 19)} direction="left" duration="40s" />
+          <MarqueeRow customers={delightedCustomers.slice(19)} direction="right" duration="32s" />
         </div>
       </div>
     </section>
