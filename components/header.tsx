@@ -1,18 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Menu, Phone, X } from "lucide-react"
+import { Menu, Phone, ChevronDown, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const products = [
@@ -20,180 +12,212 @@ const products = [
     title: "نظام استدعاء الممرضات",
     titleEn: "Nurses Call System",
     href: "/nurses-call-system",
-    description: "حلول متطورة للرعاية الصحية تضمن استجابة سريعة وفعالة للمرضى"
+    description: "حلول متطورة للرعاية الصحية تضمن استجابة سريعة وفعالة",
   },
   {
     title: "أنظمة انتظار العملاء كيوسيرف",
     titleEn: "QSERVE Queuing System",
     href: "/queuing-system",
-    description: "نظام متكامل لإدارة طوابير الانتظار وتحسين تدفق العملاء"
+    description: "نظام متكامل لإدارة طوابير الانتظار وتحسين تدفق العملاء",
   },
   {
     title: "كروت بروكسيمتي",
     titleEn: "Proximity Card",
     href: "/proximity-card",
-    description: "كروت الدخول الذكية للتحكم في الوصول والحضور"
+    description: "كروت الدخول الذكية للتحكم في الوصول والحضور",
   },
   {
     title: "كروت ماي فير",
     titleEn: "Mifare Card",
     href: "/mifare-card",
-    description: "كروت ذكية عالية الأمان للتطبيقات المتعددة"
+    description: "كروت ذكية عالية الأمان للتطبيقات المتعددة",
   },
   {
     title: "طباعة كروت بلاستيك",
     titleEn: "ID Card Printing",
     href: "/id-card-printing",
-    description: "خدمات طباعة كروت الهوية والعضوية بجودة عالية"
+    description: "خدمات طباعة كروت الهوية والعضوية بجودة عالية",
   },
   {
     title: "طابعات الكروت",
     titleEn: "ID Card Printers",
     href: "/id-card-printers",
-    description: "طابعات كروت الهوية من أفضل العلامات التجارية"
+    description: "طابعات كروت الهوية من أفضل العلامات التجارية",
   },
   {
     title: "أجهزة الخدمات الذاتية",
     titleEn: "Self Service Kiosks",
     href: "/self-service-kiosks",
-    description: "أجهزة خدمة ذاتية تفاعلية توفر تجربة مستخدم سلسة"
+    description: "أجهزة خدمة ذاتية تفاعلية توفر تجربة مستخدم سلسة",
   },
 ]
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 mx-auto">
+    <header
+      className={cn(
+        "fixed top-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "bg-nav/95 backdrop-blur-md border-b border-nav-border shadow-lg shadow-black/20"
+          : "bg-transparent"
+      )}
+    >
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg gradient-primary">
-            <span className="text-xl font-bold text-primary-foreground">Q</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary shadow-md shadow-primary/30 transition-shadow group-hover:shadow-primary/50">
+            <span className="text-base font-bold text-primary-foreground">Q</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-bold text-foreground">QSERVE</span>
-            <span className="text-xs text-muted-foreground">Yalla Store</span>
+          <div className="flex flex-col leading-none">
+            <span className="text-sm font-bold text-nav-foreground tracking-wide">QSERVE</span>
+            <span className="text-[10px] text-nav-muted uppercase tracking-widest">Yalla Store</span>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link href="/" className={cn(
-                  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                )}>
-                  الرئيسية
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>منتجاتنا</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  {products.map((product) => (
-                    <li key={product.href}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href={product.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-bold leading-none text-foreground">{product.title}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {product.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link href="/#about" className={cn(
-                  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                )}>
-                  من نحن
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link href="/#contact" className={cn(
-                  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                )}>
-                  تواصل معنا
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        <nav className="hidden lg:flex items-center gap-1">
+          <Link
+            href="/"
+            className="px-4 py-2 text-sm font-medium text-nav-foreground/80 hover:text-nav-foreground hover:bg-white/5 rounded-md transition-colors"
+          >
+            الرئيسية
+          </Link>
 
-        {/* CTA Button - Desktop */}
-        <div className="hidden lg:flex items-center gap-4">
-          <Button asChild className="gradient-primary hover:opacity-90">
-            <a href="https://wa.me/201227993999" className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              <span>اتصل بنا</span>
-            </a>
-          </Button>
+          {/* Products Dropdown */}
+          <div className="relative" onMouseEnter={() => setProductsOpen(true)} onMouseLeave={() => setProductsOpen(false)}>
+            <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-nav-foreground/80 hover:text-nav-foreground hover:bg-white/5 rounded-md transition-colors">
+              منتجاتنا
+              <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", productsOpen && "rotate-180")} />
+            </button>
+            {productsOpen && (
+              <div className="absolute top-full right-0 mt-2 w-[580px] bg-nav-surface border border-nav-border rounded-xl shadow-2xl shadow-black/40 p-4 grid grid-cols-2 gap-1">
+                {products.map((product) => (
+                  <Link
+                    key={product.href}
+                    href={product.href}
+                    className="flex flex-col gap-0.5 p-3 rounded-lg hover:bg-white/5 transition-colors group"
+                  >
+                    <span className="text-sm font-semibold text-nav-foreground group-hover:text-primary transition-colors">
+                      {product.title}
+                    </span>
+                    <span className="text-xs text-nav-muted line-clamp-1">{product.description}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link
+            href="/#about"
+            className="px-4 py-2 text-sm font-medium text-nav-foreground/80 hover:text-nav-foreground hover:bg-white/5 rounded-md transition-colors"
+          >
+            من نحن
+          </Link>
+          <Link
+            href="/#contact"
+            className="px-4 py-2 text-sm font-medium text-nav-foreground/80 hover:text-nav-foreground hover:bg-white/5 rounded-md transition-colors"
+          >
+            تواصل معنا
+          </Link>
+        </nav>
+
+        {/* CTA - Desktop */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a
+            href="https://wa.me/201227993999"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-all shadow-md shadow-primary/20 hover:shadow-primary/40"
+          >
+            <Phone className="h-3.5 w-3.5" />
+            اتصل بنا
+          </a>
         </div>
 
         {/* Mobile Menu */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
+            <Button variant="ghost" size="icon" className="text-nav-foreground hover:bg-white/10">
+              <Menu className="h-5 w-5" />
               <span className="sr-only">فتح القائمة</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[350px]">
-            <div className="flex flex-col gap-6 mt-6">
-              <Link
-                href="/"
-                className="text-lg font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                الرئيسية
-              </Link>
-              <div className="space-y-3">
-                <span className="text-lg font-medium">منتجاتنا</span>
-                <div className="flex flex-col gap-2 pr-4">
-                  {products.map((product) => (
-                    <Link
-                      key={product.href}
-                      href={product.href}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {product.title}
-                    </Link>
-                  ))}
+          <SheetContent side="right" className="w-[300px] bg-nav-surface border-nav-border p-0">
+            <div className="flex flex-col h-full">
+              {/* Sheet Header */}
+              <div className="flex items-center justify-between p-5 border-b border-nav-border">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary-foreground">Q</span>
+                  </div>
+                  <span className="text-sm font-bold text-nav-foreground">QSERVE</span>
                 </div>
+                <button onClick={() => setIsOpen(false)} className="text-nav-muted hover:text-nav-foreground transition-colors">
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-              <Link
-                href="/#about"
-                className="text-lg font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                من نحن
-              </Link>
-              <Link
-                href="/#contact"
-                className="text-lg font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                تواصل معنا
-              </Link>
-              <Button asChild className="gradient-primary hover:opacity-90 mt-4">
-                <a href="https://wa.me/201227993999" className="flex items-center justify-center gap-2">
+
+              {/* Sheet Links */}
+              <nav className="flex flex-col gap-1 p-4 flex-1">
+                <Link
+                  href="/"
+                  className="px-3 py-2.5 rounded-lg text-sm font-medium text-nav-foreground hover:bg-white/5 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  الرئيسية
+                </Link>
+
+                <div className="space-y-1">
+                  <span className="px-3 py-2.5 block text-sm font-semibold text-nav-foreground">منتجاتنا</span>
+                  <div className="flex flex-col gap-0.5 pr-2">
+                    {products.map((product) => (
+                      <Link
+                        key={product.href}
+                        href={product.href}
+                        className="px-3 py-2 rounded-lg text-sm text-nav-muted hover:text-nav-foreground hover:bg-white/5 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {product.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <Link
+                  href="/#about"
+                  className="px-3 py-2.5 rounded-lg text-sm font-medium text-nav-foreground hover:bg-white/5 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  من نحن
+                </Link>
+                <Link
+                  href="/#contact"
+                  className="px-3 py-2.5 rounded-lg text-sm font-medium text-nav-foreground hover:bg-white/5 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  تواصل معنا
+                </Link>
+              </nav>
+
+              {/* Sheet Footer */}
+              <div className="p-4 border-t border-nav-border">
+                <a
+                  href="https://wa.me/201227993999"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
                   <Phone className="h-4 w-4" />
-                  <span>اتصل بنا</span>
+                  اتصل بنا
                 </a>
-              </Button>
+              </div>
             </div>
           </SheetContent>
         </Sheet>

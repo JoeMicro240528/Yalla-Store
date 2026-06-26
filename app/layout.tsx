@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ar" dir="rtl" data-scroll-behavior="smooth">
+    <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className="bg-background">
       <body className={`${cairo.variable} font-sans antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

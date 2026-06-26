@@ -37,6 +37,19 @@
   --sidebar-accent-foreground: oklch(0.2 0.02 250);
   --sidebar-border: oklch(0.9 0.01 250);
   --sidebar-ring: oklch(0.55 0.2 250);
+
+  /* Navbar tokens */
+  --nav: oklch(0.12 0.025 250);
+  --nav-foreground: oklch(0.95 0.005 250);
+  --nav-muted: oklch(0.6 0.01 250);
+  --nav-border: oklch(0.22 0.02 250);
+  --nav-surface: oklch(0.15 0.025 250);
+
+  /* Hero tokens */
+  --hero: oklch(0.1 0.025 250);
+  --hero-foreground: oklch(0.97 0.005 250);
+  --hero-muted: oklch(0.65 0.01 250);
+  --hero-border: oklch(0.22 0.02 250);
 }
 
 .dark {
@@ -113,6 +126,19 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Navbar design tokens */
+  --color-nav: var(--nav);
+  --color-nav-foreground: var(--nav-foreground);
+  --color-nav-muted: var(--nav-muted);
+  --color-nav-border: var(--nav-border);
+  --color-nav-surface: var(--nav-surface);
+
+  /* Hero design tokens */
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-hero-muted: var(--hero-muted);
+  --color-hero-border: var(--hero-border);
 }
 
 @layer base {

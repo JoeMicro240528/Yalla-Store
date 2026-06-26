@@ -1,130 +1,106 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Phone, Monitor, Users, Clock, Bell } from "lucide-react"
+import { ArrowLeft, Phone, Users, Clock, Award, ChevronDown } from "lucide-react"
+
+const stats = [
+  { value: "+500", label: "عميل سعيد" },
+  { value: "+15", label: "سنة خبرة" },
+  { value: "+1000", label: "مشروع منفذ" },
+]
+
+const features = [
+  { icon: Users, label: "إدارة العملاء" },
+  { icon: Clock, label: "توفير الوقت" },
+  { icon: Award, label: "جودة عالية" },
+]
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden gradient-hero">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl" />
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-hero">
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      </div>
+      {/* Radial glow top-center */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/12 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="container relative mx-auto px-4 py-20">
-        <div className="grid gap-12 lg:grid-cols-2 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-right space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-sm font-medium">اول مصنع في مصر</span>
+      {/* Bottom accent glow */}
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-accent/8 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="container relative mx-auto px-4 pt-28 pb-20 flex flex-col items-center text-center">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/25 bg-primary/10 text-primary text-sm font-medium mb-8">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          </span>
+          اول مصنع في مصر لتصنيع أنظمة الانتظار
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-hero-foreground leading-tight text-balance max-w-4xl mb-6">
+          نظام انتظار العملاء
+          <span className="block text-primary mt-1">كيوسيرف QSERVE</span>
+        </h1>
+
+        {/* Subheading */}
+        <p className="text-base sm:text-lg md:text-xl text-hero-muted max-w-2xl leading-relaxed mb-10 text-pretty">
+          حلول تقنية متطورة لإدارة انتظار العملاء وتحسين تجربة الخدمة في المستشفيات والبنوك والمؤسسات الحكومية والخاصة
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
+          <Link
+            href="/#services"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5"
+          >
+            اكتشف خدماتنا
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <a
+            href="https://wa.me/201227993999"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-lg text-sm font-semibold text-hero-foreground border border-hero-border hover:bg-white/5 transition-all hover:-translate-y-0.5"
+          >
+            <Phone className="h-4 w-4" />
+            اتصل بنا
+          </a>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-px bg-hero-border rounded-2xl overflow-hidden border border-hero-border w-full max-w-xl">
+          {stats.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center justify-center gap-1 bg-hero py-6 px-4">
+              <span className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</span>
+              <span className="text-xs sm:text-sm text-hero-muted">{stat.label}</span>
             </div>
+          ))}
+        </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background leading-tight">
-              نظام انتظار العملاء
-              <span className="block text-primary mt-2">كيوسيرف QSERVE</span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-background/70 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              حلول تقنية متطورة لإدارة انتظار العملاء وتحسين تجربة الخدمة في المستشفيات والبنوك والمؤسسات الحكومية والخاصة
-            </p>
-
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <Button asChild size="lg" className="gradient-primary hover:opacity-90 text-lg px-8">
-                <Link href="/#services">
-                  اكتشف خدماتنا
-                  <ArrowLeft className="mr-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-background/20 text-black hover:bg-background/10 text-lg px-8">
-                <a href="https://wa.me/201227993999">
-                  <Phone className="ml-2 h-5 w-5" />
-                  اتصل بنا
-                </a>
-              </Button>
+        {/* Feature Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+          {features.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-hero-border bg-white/[0.03] text-hero-muted text-sm"
+            >
+              <Icon className="h-3.5 w-3.5 text-primary" />
+              {label}
             </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-background/10">
-              <div className="text-center lg:text-right">
-                <div className="text-3xl md:text-4xl font-bold text-primary">+500</div>
-                <div className="text-sm text-background/60">عميل سعيد</div>
-              </div>
-              <div className="text-center lg:text-right">
-                <div className="text-3xl md:text-4xl font-bold text-primary">+15</div>
-                <div className="text-sm text-background/60">سنة خبرة</div>
-              </div>
-              <div className="text-center lg:text-right">
-                <div className="text-3xl md:text-4xl font-bold text-primary">+1000</div>
-                <div className="text-sm text-background/60">مشروع منفذ</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Visual Elements */}
-          <div className="hidden lg:block relative">
-            <div className="relative w-full aspect-square max-w-lg mx-auto">
-              {/* Central Display */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-32 bg-card rounded-2xl shadow-2xl flex items-center justify-center animate-float">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-primary">A001</div>
-                  <div className="text-sm text-muted-foreground">الرقم الحالي</div>
-                </div>
-              </div>
-
-              {/* Floating Cards */}
-              <div className="absolute top-10 right-10 w-32 h-24 bg-card rounded-xl shadow-xl flex items-center justify-center animate-float" style={{ animationDelay: "0.5s" }}>
-                <div className="text-center p-3">
-                  <Monitor className="h-8 w-8 text-primary mx-auto mb-1" />
-                  <span className="text-xs text-muted-foreground">شاشات عرض</span>
-                </div>
-              </div>
-
-              <div className="absolute top-20 left-0 w-32 h-24 bg-card rounded-xl shadow-xl flex items-center justify-center animate-float" style={{ animationDelay: "1s" }}>
-                <div className="text-center p-3">
-                  <Users className="h-8 w-8 text-primary mx-auto mb-1" />
-                  <span className="text-xs text-muted-foreground">إدارة العملاء</span>
-                </div>
-              </div>
-
-              <div className="absolute bottom-20 right-0 w-32 h-24 bg-card rounded-xl shadow-xl flex items-center justify-center animate-float" style={{ animationDelay: "1.5s" }}>
-                <div className="text-center p-3">
-                  <Clock className="h-8 w-8 text-primary mx-auto mb-1" />
-                  <span className="text-xs text-muted-foreground">توفير الوقت</span>
-                </div>
-              </div>
-
-              <div className="absolute bottom-10 left-10 w-32 h-24 bg-card rounded-xl shadow-xl flex items-center justify-center animate-float" style={{ animationDelay: "2s" }}>
-                <div className="text-center p-3">
-                  <Bell className="h-8 w-8 text-primary mx-auto mb-1" />
-                  <span className="text-xs text-muted-foreground">تنبيهات ذكية</span>
-                </div>
-              </div>
-
-              {/* Decorative Circles */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-2 border-primary/20 rounded-full" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-primary/10 rounded-full" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-primary/5 rounded-full" />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-background/40">
-        <span className="text-sm">اكتشف المزيد</span>
-        <div className="w-6 h-10 rounded-full border-2 border-background/20 flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-background/40 rounded-full animate-bounce" />
-        </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-hero-muted/50">
+        <span className="text-xs tracking-widest uppercase">اكتشف المزيد</span>
+        <ChevronDown className="h-4 w-4 animate-bounce" />
       </div>
     </section>
   )
