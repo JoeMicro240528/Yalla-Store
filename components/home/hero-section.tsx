@@ -18,6 +18,16 @@ const features = [
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-hero">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/hero-bg.png')" }}
+        aria-hidden="true"
+      />
+
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-hero/80" aria-hidden="true" />
+
       {/* Subtle grid overlay */}
       <div
         className="absolute inset-0 opacity-[0.04]"
