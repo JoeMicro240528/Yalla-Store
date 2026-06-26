@@ -282,6 +282,108 @@ const sectors = [
   },
 ]
 
+// ─── Featured delighted customers (last page of the PDF) ────────────────────
+
+const delightedCustomers = [
+  // Banks
+  { name: "Western Union", sector: "البنوك", color: "#FFD700", bg: "#7B3F00" },
+  { name: "بنك ناصر الاجتماعي", sector: "البنوك", color: "#1E40AF", bg: "#DBEAFE" },
+  { name: "SAIB Bank", sector: "البنوك", color: "#1E40AF", bg: "#DBEAFE" },
+  { name: "بنك قناة السويس", sector: "البنوك", color: "#1E40AF", bg: "#DBEAFE" },
+  { name: "البنك الزراعي المصري", sector: "البنوك", color: "#15803D", bg: "#DCFCE7" },
+  // Telecom
+  { name: "Etisalat", sector: "الاتصالات", color: "#00A651", bg: "#F0FDF4" },
+  { name: "Orange", sector: "الاتصالات", color: "#FF6900", bg: "#FFF7ED" },
+  { name: "WE", sector: "الاتصالات", color: "#7C3AED", bg: "#F5F3FF" },
+  { name: "APPLE", sector: "الاتصالات", color: "#111827", bg: "#F9FAFB" },
+  { name: "OPPO", sector: "الاتصالات", color: "#1D6534", bg: "#DCFCE7" },
+  { name: "Xiaomi (mi)", sector: "الاتصالات", color: "#FF6900", bg: "#FFF7ED" },
+  // Hospitals
+  { name: "القصر العيني الفرنساوي", sector: "الصحة", color: "#BE123C", bg: "#FFF1F2" },
+  { name: "مستشفى أبو الريش", sector: "الصحة", color: "#BE123C", bg: "#FFF1F2" },
+  { name: "مستشفى الدمرداش", sector: "الصحة", color: "#BE123C", bg: "#FFF1F2" },
+  { name: "مستشفى الطيران المدني", sector: "الصحة", color: "#BE123C", bg: "#FFF1F2" },
+  { name: "معهد الكبد القومي", sector: "الصحة", color: "#BE123C", bg: "#FFF1F2" },
+  // Government / Traffic
+  { name: "إدارة مرور الجيزة", sector: "المرور", color: "#B45309", bg: "#FFFBEB" },
+  { name: "إدارة مرور القاهرة", sector: "المرور", color: "#B45309", bg: "#FFFBEB" },
+  { name: "الأحوال المدنية", sector: "الحكومة", color: "#374151", bg: "#F3F4F6" },
+  { name: "حياة كريمة", sector: "الحكومة", color: "#374151", bg: "#F3F4F6" },
+  // Electricity
+  { name: "شركة القناة للكهرباء", sector: "الكهرباء", color: "#92400E", bg: "#FFFBEB" },
+  { name: "شمال القاهرة للكهرباء", sector: "الكهرباء", color: "#92400E", bg: "#FFFBEB" },
+  { name: "جنوب الدلتا للكهرباء", sector: "الكهرباء", color: "#92400E", bg: "#FFFBEB" },
+  // Aviation & Shipping
+  { name: "مصر للطيران", sector: "الطيران", color: "#1D4ED8", bg: "#EFF6FF" },
+  { name: "الخطوط الجوية القطرية", sector: "الطيران", color: "#6B0F1A", bg: "#FFF1F2" },
+  { name: "COSCO SHIPPING", sector: "الملاحة", color: "#0E7490", bg: "#ECFEFF" },
+  { name: "YANG MING SHIPPING", sector: "الملاحة", color: "#0E7490", bg: "#ECFEFF" },
+  // Services & Companies
+  { name: "IKEA", sector: "شركات", color: "#0051BA", bg: "#FFDA1A" },
+  { name: "Jumia", sector: "شركات", color: "#F97316", bg: "#FFF7ED" },
+  { name: "Careem", sector: "شركات", color: "#1DBF73", bg: "#F0FDF4" },
+  { name: "B.Tech", sector: "شركات", color: "#EF4444", bg: "#FFF1F2" },
+  { name: "العربي جروب", sector: "شركات", color: "#DC2626", bg: "#FFF1F2" },
+  { name: "أوليمبك جروب", sector: "شركات", color: "#1E40AF", bg: "#DBEAFE" },
+  { name: "ORASCOM", sector: "شركات", color: "#15803D", bg: "#DCFCE7" },
+  { name: "نقابة الصيادلة", sector: "مؤسسات", color: "#6D28D9", bg: "#F5F3FF" },
+  { name: "قناة السويس", sector: "مؤسسات", color: "#0E7490", bg: "#ECFEFF" },
+  { name: "مكاتب التموين", sector: "التموين", color: "#15803D", bg: "#DCFCE7" },
+]
+
+// ─── Logo card ────────────────────────────────────────────────────────────────
+
+function LogoCard({ customer }: { customer: typeof delightedCustomers[0] }) {
+  const initials = customer.name
+    .replace(/[\u0600-\u06FF\s]+/g, (m) => m.trim().charAt(0))
+    .substring(0, 2)
+    .toUpperCase() || customer.name.substring(0, 2).toUpperCase()
+
+  return (
+    <div className="flex-shrink-0 w-44 h-24 rounded-xl border border-border bg-card flex flex-col items-center justify-center gap-1.5 px-3 mx-2 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200">
+      {/* Colored initial badge */}
+      <div
+        className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
+        style={{ backgroundColor: customer.bg, color: customer.color }}
+      >
+        {customer.name.charAt(0)}
+      </div>
+      <p className="text-xs font-medium text-foreground text-center leading-tight line-clamp-2">
+        {customer.name}
+      </p>
+    </div>
+  )
+}
+
+// ─── Infinite marquee row ─────────────────────────────────────────────────────
+
+function MarqueeRow({
+  customers,
+  reverse = false,
+  speed = 30,
+}: {
+  customers: typeof delightedCustomers
+  reverse?: boolean
+  speed?: number
+}) {
+  const doubled = [...customers, ...customers]
+  return (
+    <div className="overflow-hidden">
+      <div
+        className="flex"
+        style={{
+          animation: `marquee ${speed}s linear infinite ${reverse ? "reverse" : "normal"}`,
+          width: "max-content",
+        }}
+      >
+        {doubled.map((c, i) => (
+          <LogoCard key={i} customer={c} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Ticker component ────────────────────────────────────────────────────────
 
 function ClientTicker({ clients }: { clients: string[] }) {
@@ -463,6 +565,34 @@ export function GallerySection() {
             )}
           </div>
         )}
+      </div>
+
+      {/* ── Logo Wall ──────────────────────────────────────────────────── */}
+      <div className="mt-20 border-t border-border pt-16">
+        <div className="container mx-auto px-4 mb-10 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
+            QSERVE&apos;s delighted customers
+          </span>
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 text-balance">
+            عملاء سعداء بخدماتنا
+          </h2>
+          <p className="text-muted-foreground max-w-xl mx-auto text-pretty leading-relaxed text-sm">
+            من البنوك والمستشفيات إلى شركات الاتصالات والطيران — ثقة كبرى المؤسسات في مصر والمنطقة
+          </p>
+        </div>
+
+        {/* Marquee rows with edge fades */}
+        <div className="relative">
+          {/* Left fade */}
+          <div className="absolute inset-y-0 start-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
+          {/* Right fade */}
+          <div className="absolute inset-y-0 end-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
+
+          <div className="flex flex-col gap-4 py-2">
+            <MarqueeRow customers={delightedCustomers.slice(0, 19)} speed={35} />
+            <MarqueeRow customers={delightedCustomers.slice(19)} reverse speed={28} />
+          </div>
+        </div>
       </div>
     </section>
   )
