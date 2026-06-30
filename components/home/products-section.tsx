@@ -53,11 +53,18 @@ const products = [
     image: "/images/self-service-kiosk.jpg",
     href: "/self-service-kiosks"
   },
+  {
+    title: " شاشات تفاعليه",
+    titleEn: "Smart Boards",
+    description: "شاشات تفاعلية للبنوك والفنادق والمطاعم والمؤسسات الحكومية",
+    image: "/images/gallery/smart-boards2.jfif",
+    href: ""
+  },
 ]
 
 export function ProductsSection() {
   return (
-    <section className="py-20 bg-muted/30">
+    <section id="products" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -72,6 +79,36 @@ export function ProductsSection() {
         </div>
 
         {/* Featured Product - Large */}
+        <div className="mb-12">
+          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 group">
+            <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+              <div className="flex flex-col justify-center space-y-6 order-2 lg:order-1">
+                <div>
+                  <span className="text-primary font-medium text-sm">{products[0].titleEn}</span>
+                  <h3 className="text-3xl md:text-4xl font-bold text-foreground mt-2">{products[0].title}</h3>
+                </div>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  {products[0].description}
+                </p>
+                <Button asChild size="lg" className="w-fit">
+                  <Link href={products[0].href} className="flex items-center gap-2">
+                    <span>اكتشف المزيد</span>
+                    <ArrowLeft className="h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
+              <div className="relative h-64 lg:h-auto order-1 lg:order-2">
+                <Image
+                  src={products[0].image}
+                  alt={products[0].title}
+                  fill
+                  className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="mb-12">
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 group">
             <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">

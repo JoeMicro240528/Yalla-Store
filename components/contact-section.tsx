@@ -14,9 +14,14 @@ export function ContactSection() {
     e.preventDefault()
     setIsLoading(true)
     // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsLoading(false)
-    setIsSubmitted(true)
+await new Promise(resolve => setTimeout(resolve, 1000))
+setIsSubmitted(true)
+
+// بعد ← بيبني رسالة واتساب ويفتحها
+const text = `🔔 رسالة جديدة...\n👤 الاسم: ${name}\n...`
+window.open(`https://wa.me/201227993999?text=${encodeURIComponent(text)}`, "_blank")
+    // setIsLoading(false)
+    // setIsSubmitted(true)
   }
 
   return (

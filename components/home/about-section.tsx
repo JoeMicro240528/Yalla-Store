@@ -75,7 +75,7 @@ export function AboutSection() {
                 <div className="text-xs opacity-80">عميل</div>
               </div>
               <div className="bg-secondary text-secondary-foreground rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">+15</div>
+                <div className="text-2xl font-bold">+20</div>
                 <div className="text-xs opacity-80">سنة</div>
               </div>
               <div className="bg-accent text-accent-foreground rounded-xl p-4 text-center">
