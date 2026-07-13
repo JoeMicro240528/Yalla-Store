@@ -1,12 +1,6 @@
 import type { Metadata } from 'next'
-import { Cairo } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  variable: '--font-cairo'
-})
 
 export const metadata: Metadata = {
   title: 'Yalla Store | نظام انتظار العملاء في مصر | Queue Management System',
@@ -15,23 +9,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://yallastore.com",
   },
-  // icons: {
-  //   icon: [
-  //     {
-  //       url: '/icon-light-32x32.png',
-  //       media: '(prefers-color-scheme: light)',
-  //     },
-  //     {
-  //       url: '/icon-dark-32x32.png',
-  //       media: '(prefers-color-scheme: dark)',
-  //     },
-  //     {
-  //       url: '/icon.svg',
-  //       type: 'image/svg+xml',
-  //     },
-  //   ],
-  //   apple: '/apple-icon.png',
-  // },
 }
 
 export default function RootLayout({
@@ -41,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className="bg-background" suppressHydrationWarning>
-      <body className={`${cairo.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { AnimatedSection } from "@/components/animated-section"
 import {
   Landmark,
   Hospital,
@@ -15,6 +16,7 @@ import {
   Briefcase,
   ShoppingBag,
   LayoutGrid,
+  ArrowLeft,
 } from "lucide-react"
 
 // ─── Real data from QSERVE Customer List 2022 ───────────────────────────────
@@ -287,17 +289,17 @@ const sectors = [
 function ClientTicker({ clients }: { clients: string[] }) {
   const doubled = [...clients, ...clients]
   return (
-    <div className="overflow-hidden mt-6 py-3 border-t border-border/50">
+    <div className="overflow-hidden mt-6 py-4 border-t border-slate-100 ticker-mask">
       <div
-        className="flex gap-6 animate-ticker whitespace-nowrap"
+        className="flex gap-8 animate-ticker whitespace-nowrap"
         style={{ width: "max-content" }}
       >
         {doubled.map((name, i) => (
           <span
             key={i}
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground shrink-0"
+            className="inline-flex items-center gap-2.5 text-sm font-semibold text-slate-500 shrink-0 hover:text-primary transition-colors duration-200"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-primary/60 inline-block animate-pulse" />
             {name}
           </span>
         ))}
@@ -315,57 +317,49 @@ export function GallerySection() {
   const displaySectors = sectors.filter((s) => s.id !== "all")
 
   return (
-    <section id="clients" className="py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section id="clients" className="py-24 bg-slate-50 relative overflow-hidden">
+      {/* Background radial overlays */}
+      <div className="absolute top-0 right-1/3 w-[500px] h-[300px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="container relative mx-auto px-4 z-10">
 
         {/* Header */}
-        {/* <div className="text-center mb-14">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
-            عملاؤنا
+        <AnimatedSection className="text-center mb-16 space-y-4">
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold uppercase tracking-wider animate-float-fast">
+            شركاء النجاح
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-            ثقة أكثر من <span className="text-primary">4,238+</span> مشروع منفذ
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight text-balance max-w-3xl mx-auto">
+            ثقة أكثر من <span className="text-primary font-black">4,238+</span> مشروع منفذ
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed">
-            خدمنا أكبر المؤسسات والشركات في مصر والوطن العربي عبر مختلف القطاعات بإجمالي أكثر من{" "}
-            <strong className="text-foreground">21,889 شباك خدمة</strong> حتى عام 2026
+          <p className="text-slate-500 max-w-xl mx-auto text-pretty text-sm sm:text-base leading-relaxed">
+            خدمنا كبرى الهيئات والمؤسسات الحكومية والخاصة والبنوك والمستشفيات في مصر والمنطقة بإجمالي يتجاوز <strong className="text-slate-800">21,889 شباك خدمة</strong>.
           </p>
-        </div> */}
-   <div className="text-center mb-14">
-     <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
-            عملاؤنا
-          </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 text-balance">
-            عملاء سعداء بخدماتنا
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto text-pretty leading-relaxed text-sm">
-            من البنوك والمستشفيات إلى شركات الاتصالات والطيران — ثقة كبرى المؤسسات في مصر والمنطقة
-          </p>
-        </div>
+        </AnimatedSection>
 
-        {/* Summary stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        {/* Summary stats with premium cards */}
+        <AnimatedSection className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {[
-            { label: "إجمالي المشاريع", value: "4,238+", sub: "حتى 2026" },
-            { label: "شبابيك الخدمة", value: "21,889+", sub: "منفذة" },
-            { label: "قطاعات مختلفة", value: "12+", sub: "قطاع" },
-            { label: "سنوات خبرة", value: "20+", sub: "سنة في السوق" },
-          ].map((stat) => (
+            { label: "إجمالي المشاريع", value: "4,238+", sub: "حتى عام 2026" },
+            { label: "شبابيك الخدمة", value: "21,889+", sub: "منفذة بالكامل" },
+            { label: "قطاعات مجهزة", value: "12+", sub: "قطاع خدمي" },
+            { label: "سنوات خبرة ممتدة", value: "20+", sub: "سنة في تصنيع الأنظمة" },
+          ].map((stat, i) => (
             <div
               key={stat.label}
-              className="bg-card border border-border rounded-xl p-5 text-center"
+              className="bg-white hover:bg-slate-50 border border-slate-200/80 hover:border-primary/25 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md group"
+              style={{ animationDelay: `${i * 80}ms` }}
             >
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
+              <div className="text-2xl md:text-3xl font-black text-primary mb-1 group-hover:scale-105 transition-transform duration-300">
                 {stat.value}
               </div>
-              <div className="text-sm font-medium text-foreground">{stat.label}</div>
-              <div className="text-xs text-muted-foreground mt-0.5">{stat.sub}</div>
+              <div className="text-xs sm:text-sm font-bold text-slate-850">{stat.label}</div>
+              <div className="text-[10px] text-slate-400 mt-1">{stat.sub}</div>
             </div>
           ))}
-        </div>
+        </AnimatedSection>
 
         {/* Sector filter tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <AnimatedSection delay={100} className="flex flex-wrap justify-center gap-2 mb-12">
           {sectors.map((sector) => {
             const Icon = sector.icon
             const isActive = activeSector === sector.id
@@ -373,15 +367,15 @@ export function GallerySection() {
               <button
                 key={sector.id}
                 onClick={() => setActiveSector(sector.id)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer ${isActive ? sector.activeColor + " border-transparent shadow-md" : sector.color
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-300 cursor-pointer ${isActive ? sector.activeColor + " border-transparent shadow-lg shadow-primary/10 scale-105" : sector.color + " hover:bg-slate-100 hover:scale-[1.02]"
                   }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-4 h-4 shrink-0" />
                 {sector.label}
               </button>
             )
           })}
-        </div>
+        </AnimatedSection>
 
         {/* Sector detail card */}
         {activeSector === "all" ? (
@@ -393,34 +387,34 @@ export function GallerySection() {
                 <button
                   key={sector.id}
                   onClick={() => setActiveSector(sector.id)}
-                  className="bg-card border border-border rounded-xl p-5 text-start hover:border-primary/40 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                  className="bg-white border border-slate-200/80 rounded-2xl p-5 text-right hover:border-primary/35 hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col justify-between"
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`p-2.5 rounded-lg border ${sector.color} shrink-0`}>
+                    <div className={`p-2.5 rounded-xl border ${sector.color} shrink-0 group-hover:scale-110 transition-transform`}>
                       <Icon className="w-5 h-5" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
+                    <div className="flex-1 min-w-0 text-right">
+                      <h3 className="font-bold text-slate-900 group-hover:text-primary transition-colors mb-1 text-sm sm:text-base">
                         {sector.label}
                       </h3>
-                      <div className="flex gap-4 text-xs text-muted-foreground">
+                      <div className="flex gap-4 text-xs text-slate-500 font-semibold">
                         <span>{sector.projects.toLocaleString("ar-EG")} مشروع</span>
                         <span>{sector.windows.toLocaleString("ar-EG")} شباك</span>
                       </div>
                     </div>
                   </div>
                   {sector.clients && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
+                    <div className="mt-4 flex flex-wrap gap-1.5 justify-start">
                       {sector.clients.slice(0, 3).map((c) => (
                         <span
                           key={c}
-                          className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground"
+                          className="text-[10px] sm:text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 border border-slate-200/40 font-medium"
                         >
                           {c}
                         </span>
                       ))}
                       {sector.clients.length > 3 && (
-                        <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">
+                        <span className="text-[10px] sm:text-xs bg-primary/10 px-2.5 py-1 rounded-lg text-primary font-bold">
                           +{sector.clients.length - 3} آخرين
                         </span>
                       )}
@@ -432,9 +426,9 @@ export function GallerySection() {
           </div>
         ) : (
           // Single sector expanded view
-          <div className="bg-card border border-border rounded-2xl overflow-hidden">
+          <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xl">
             {/* Sector header */}
-            <div className={`px-6 py-5 flex items-center gap-4 border-b border-border`}>
+            <div className="px-6 py-5 flex items-center gap-4 border-b border-slate-100">
               {(() => {
                 const Icon = current.icon
                 return (
@@ -443,11 +437,11 @@ export function GallerySection() {
                   </div>
                 )
               })()}
-              <div>
-                <h3 className="text-lg font-bold text-foreground">{current.label}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {current.projects.toLocaleString("ar-EG")} مشروع &nbsp;·&nbsp;{" "}
-                  {current.windows.toLocaleString("ar-EG")} شباك خدمة
+              <div className="text-right">
+                <h3 className="text-base sm:text-lg font-black text-slate-900">{current.label}</h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
+                  {current.projects.toLocaleString("ar-EG")} مشروع مجهّز &nbsp;·&nbsp;{" "}
+                  {current.windows.toLocaleString("ar-EG")} شباك خدمة قيد العمل
                 </p>
               </div>
             </div>
@@ -455,14 +449,14 @@ export function GallerySection() {
             {/* Client grid */}
             {current.clients && (
               <div className="p-6">
-                <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {current.clients.map((client) => (
                     <div
                       key={client}
-                      className="flex items-center gap-2.5 bg-muted/50 rounded-lg px-3 py-2.5 border border-border/50"
+                      className="flex items-center gap-2.5 bg-slate-50/50 hover:bg-slate-50 rounded-xl px-3.5 py-3 border border-slate-150 hover:border-primary/25 transition-all text-right"
                     >
-                      <span className="w-2 h-2 rounded-full bg-primary/70 shrink-0" />
-                      <span className="text-sm text-foreground leading-snug">{client}</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0 animate-pulse" />
+                      <span className="text-xs sm:text-sm font-bold text-slate-705 leading-snug text-right">{client}</span>
                     </div>
                   ))}
                 </div>
@@ -474,9 +468,21 @@ export function GallerySection() {
           </div>
         )}
       </div>
-       <div className="logo flex justify-center p-4 my-4 mr-0 w-full">
-         <img className="" src="/images/logos.PNG" alt="" width={'80%'} height={'100vh'}/>
-       </div>
+
+      {/* Trust logo board wrapper */}
+      <AnimatedSection delay={150} className="container relative mx-auto px-4 mt-20 z-10">
+        <div className="bg-white border border-slate-200 rounded-[28px] p-6 sm:p-10 flex flex-col items-center justify-center shadow-sm hover:border-primary/20 transition-all duration-500">
+          <p className="text-xs sm:text-sm font-black text-slate-500 uppercase tracking-widest mb-6">بعض كبرى الهيئات والشركات المجهزة بأنظمتنا</p>
+          <div className="w-full flex justify-center max-w-4xl hover:scale-[1.01] transition-transform duration-500">
+            <img 
+              className="rounded-2xl border border-slate-100 shadow-lg opacity-100 object-contain max-h-56 sm:max-h-72" 
+              src="/images/logos.png" 
+              alt="QSERVE Clients Board Logo" 
+              style={{ width: "95%" }}
+            />
+          </div>
+        </div>
+      </AnimatedSection>
     </section>
   )
 }
