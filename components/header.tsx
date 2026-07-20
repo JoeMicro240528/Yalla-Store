@@ -124,12 +124,12 @@ export function Header() {
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-700 shadow-lg shadow-primary/30 transition-all duration-300 group-hover:shadow-primary/65 group-hover:scale-105">
+          {/* <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-700 shadow-lg shadow-primary/30 transition-all duration-300 group-hover:shadow-primary/65 group-hover:scale-105">
             <span className="text-lg font-black text-white tracking-wider">Q</span>
             <span className="absolute -inset-0.5 rounded-xl bg-primary/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
+          </div> */}
           <div className="flex flex-col leading-none">
-            <span className="text-base font-extrabold text-slate-900 tracking-wide transition-colors group-hover:text-primary">QSERVE</span>
+            <span className="text-xl font-extrabold text-primary tracking-wide transition-colors group-hover:text-shadow-sidebar-primary-foreground">QSERVE</span>
             <span className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-0.5">Yalla Store</span>
           </div>
         </Link>

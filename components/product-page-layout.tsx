@@ -96,7 +96,7 @@ export function ProductPageLayout({
                     اتصل للاستفسار
                   </a>
                   <Link
-                    href="/#contact"
+                    href="https://wa.me/201227993999"
                     className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-bold text-slate-700 border border-slate-200 bg-white hover:bg-slate-50 hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 shadow-sm"
                   >
                     طلب عرض سعر

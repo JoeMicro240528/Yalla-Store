@@ -10,7 +10,6 @@ const products = [
     description: "أنظمة متطورة لاستدعاء الممرضات في المستشفيات والمراكز الصحية، تضمن استجابة سريعة وفعالة للمرضى",
     image: "/images/nurses-call-system.jpg",
     href: "/nurses-call-system",
-    badge: "الأكثر مبيعاً في القطاع الطبي",
   },
   {
     title: "أنظمة انتظار العملاء QSERVE",
@@ -18,7 +17,7 @@ const products = [
     description: "نظام كيوسيرف لإدارة الطوابير وتنظيم انتظار العملاء في البنوك والمستشفيات والجهات الحكومية",
     image: "/images/queuing-system.jpg",
     href: "/queuing-system",
-    badge: "تصنيع محلي بمواصفات عالمية",
+    
   },
   {
     title: "كروت بروكسيمتي",
@@ -61,7 +60,7 @@ const products = [
     description: "شاشات لمس ذكية بتقنية 4K ومعالج مدمج للتعليم والاجتماعات وقاعات التدريب",
     image: "/images/gallery/smart-boards2.jpg",
     href: "/smart-boards",
-    badge: "جديد",
+ 
   },
 
 ]
@@ -98,10 +97,7 @@ export function ProductsSection() {
             <div className="grid lg:grid-cols-12 gap-8 p-8 lg:p-12 relative z-10 items-center">
               <div className="lg:col-span-7 flex flex-col justify-center space-y-6 order-2 lg:order-1 text-right">
                 <div className="space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 text-[11px] font-bold">
-                    <Award className="w-3.5 h-3.5 shrink-0" />
-                    {products[0].badge}
-                  </div>
+                  
                   <p className="text-primary font-bold text-xs uppercase tracking-widest">{products[0].titleEn}</p>
                   <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900">{products[0].title}</h3>
                 </div>
@@ -140,10 +136,7 @@ export function ProductsSection() {
             <div className="grid lg:grid-cols-12 gap-8 p-8 lg:p-12 relative z-10 items-center">
               <div className="lg:col-span-7 flex flex-col justify-center space-y-6 order-2 lg:order-1 text-right">
                 <div className="space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 text-[11px] font-bold">
-                    <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                    {products[1].badge}
-                  </div>
+                  
                   <p className="text-primary font-bold text-xs uppercase tracking-widest">{products[1].titleEn}</p>
                   <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900">{products[1].title}</h3>
                 </div>
@@ -185,14 +178,9 @@ export function ProductsSection() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {products.filter((_, i) => i !== 0 && i !== 1).map((product) => {
             const isInteractive = product.href !== "";
-            const CardWrapper = isInteractive ? Link : "div";
-            
-            return (
-              <CardWrapper
-                key={product.title}
-                {...(isInteractive ? { href: product.href } : {})}
-                className="group relative rounded-2xl overflow-hidden bg-white border border-slate-200/80 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full p-0 cursor-pointer text-right"
-              >
+
+            const content = (
+              <div className="group relative rounded-2xl overflow-hidden bg-white border border-slate-200/80 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full p-0 cursor-pointer text-right">
                 <div>
                   <div className="relative h-52 overflow-hidden border-b border-slate-100">
                     <Image
@@ -214,14 +202,21 @@ export function ProductsSection() {
                     </p>
                   </div>
                 </div>
-                
                 {isInteractive && (
                   <div className="px-6 pb-6 pt-0 flex items-center justify-end text-primary gap-1.5 mt-auto">
                     <span className="text-xs font-bold group-hover:underline">عرض المزيد</span>
                     <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
                   </div>
                 )}
-              </CardWrapper>
+              </div>
+            );
+
+            return isInteractive ? (
+              <Link key={product.title} href={product.href} className="block">
+                {content}
+              </Link>
+            ) : (
+              <div key={product.title}>{content}</div>
             )
           })}
         </div>
